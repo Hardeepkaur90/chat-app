@@ -1,1 +1,1 @@
-web: gunicorn chat_project.asgi
+web: daphne chat_project.asgi
