@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Chat Room</title>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+</head>
+<body style='max-height: 80vh;'>
+    <div class="container-fluid p-5">
+    <a class="leaveButton" href="{% url 'index' %}">Leave Room</a>
+    <a class="logoutButton" href="{% url 'logout' %}">Logout</a>
+    <div class="container">
+        <div id="chat-log"  style='overflow: scroll; max-height: 60vh;'></div>
+    </div>
+
+    <div class="container">
+        <input class="textInput" id="chat-message-input" type="text" size="100" required ><br>
+        <input class="button" id="chat-message-submit" type="button" value="Send">
+        {{ room_name|json_script:"room-name" }}
+    </div>
+    {{ request.user.id|json_script:'user_id' }}
+        
+</div>
+    <script src="{% static 'room.js' %}"></script>
+</body>
+</html>
