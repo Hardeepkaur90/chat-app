@@ -9,8 +9,15 @@ if (!chatLog.hasChildNodes()) {
     chatLog.appendChild(emptyText)
 }
 
+// const chatSocket = new WebSocket(
+//     'wss://'
+//     + window.location.host
+//     + '/ws/chat/'
+//     + roomName
+//     + '/'
+// );
 const chatSocket = new WebSocket(
-    'wss://'
+    'ws://'
     + window.location.host
     + '/ws/chat/'
     + roomName
@@ -55,3 +62,4 @@ document.querySelector('#chat-message-submit').onclick = function(e) {
     }));
     messageInputDom.value = '';
 };
+
