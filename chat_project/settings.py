@@ -54,7 +54,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'chat_project.urls'
 
-
+CSRF_TRUSTED_ORIGINS = ['https://chatfriendproject.herokuapp.com']
 
 
 TEMPLATES = [
