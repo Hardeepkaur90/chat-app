@@ -54,7 +54,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'chat_project.urls'
 
-CSRF_TRUSTED_ORIGINS = ['https://fca5-175-176-184-243.ngrok.io']
+
 
 
 TEMPLATES = [
