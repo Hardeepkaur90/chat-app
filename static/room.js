@@ -18,7 +18,7 @@ if (!chatLog.hasChildNodes()) {
 }
 
 const chatSocket = new WebSocket(
-    'ws://'
+    'wss://'
     + window.location.host
     + '/ws/chat/'
     + roomName
