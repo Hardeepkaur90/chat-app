@@ -1,13 +1,6 @@
 {% load static %}
 <html>
 <head>
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-            <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
-            {% endfor %}
-        </ul>
-    {% endif %}
     <meta charset="utf-8"/>
     <title>Chat Rooms</title>
 
@@ -15,11 +8,10 @@
 </head>
 <body>
     <div class="container">
-        <h3 class="heading">What chat room would you like to enter?</h3>
-        <input class="textInput" id="room-name-input" type="text" size="100" required ><br>
+        <h3 class="heading">Create Or Join another Chat Room</h3>
+        <input class="textInput" id="room-name-input" type="text" size="100" placeholder="Please Enter Your Chat Room Name" required ><br>
         <input class="button" id="room-name-submit" type="button" value="Enter">
     </div>
-
     <script src="{% static 'index.js' %}"></script>
 </body>
 </html>

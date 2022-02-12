@@ -8,10 +8,11 @@
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
 </head>
 <body style='max-height: 80vh;'>
+    <h1 id="curr_user"></h1>
     <div class="container-fluid p-5">
-    <a class="leaveButton" href="{% url 'index' %}">Leave Room</a>
+    <a class="leaveButton" id="leave_chat">Leave Room</a>
     <div class="container">
-        <div id="chat-log"  style='overflow: scroll; max-height: 60vh;'></div>
+        <div id="chat-log"  style='overflow-y: scroll; max-height: 50vh;'></div>
     </div>
 
     <div class="container">
