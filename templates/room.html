@@ -1,28 +1,43 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8"/>
+  <head>
+    <meta charset="utf-8" />
     <title>Chat Room</title>
-
-    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
-</head>
-<body style='max-height: 80vh;'>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+      integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
+  </head>
+  <body style="max-height: 80vh">
     <h1 id="curr_user"></h1>
     <div class="container-fluid p-5">
-    <a class="leaveButton" id="leave_chat">Leave Room</a>
-    <div class="container">
-        <div id="chat-log"  style='overflow-y: scroll; max-height: 50vh;'></div>
-    </div>
+      <a class="leaveButton" id="leave_chat">Leave Room</a>
+      <div class="container">
+        <div id="chat-log" style="overflow-y: scroll; max-height: 50vh"></div>
+      </div>
 
-    <div class="container">
-        <input class="textInput" id="chat-message-input" type="text" size="100" required ><br>
-        <input class="button" id="chat-message-submit" type="button" value="Send">
+      <div class="container">
+        <input
+          class="textInput"
+          id="chat-message-input"
+          type="text"
+          size="100"
+          required
+        /><br />
+        <input
+          class="button"
+          id="chat-message-submit"
+          type="button"
+          value="Send"
+        />
         {{ room_name|json_script:"room-name" }}
+      </div>
+      {{ request.user.id|json_script:'user_id' }}
     </div>
-    {{ request.user.id|json_script:'user_id' }}
-        
-</div>
     <script src="{% static 'room.js' %}"></script>
-</body>
+  </body>
 </html>

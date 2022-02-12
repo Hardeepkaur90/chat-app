@@ -4,7 +4,6 @@ if (name === '') {
     alert("Please Enter Name");
     window.location.pathname = '/chat/';
 } 
-
 document.getElementById("curr_user").innerHTML = name
 const chatLog = document.querySelector('#chat-log')
 const roomName = JSON.parse(document.getElementById('room-name').textContent);
@@ -39,15 +38,17 @@ chatSocket.onmessage = function(e) {
     const sender = data['sender']
     messageElement.innerHTML = '<b>' + data.sender + '</b><br/>'  + data.message
     if (data.message === 'Join Group'){
+        messageElement.innerHTML = '<b>' + data.sender + '  '  + data.message
         if (sender === name) {
-            messageElement.classList.add('message', 'join')
+            messageElement.classList.add('message1', 'join')
             } else {
-            messageElement.classList.add('message', 'recever-join')
+            messageElement.classList.add('message1', 'recever-join')
         }
     }
     else if(data.message === 'leaved the chat'){
+        messageElement.innerHTML = '<b>' + data.sender + '  '  + data.message
         if (sender !== name) {
-            messageElement.classList.add('message', 'leave')
+            messageElement.classList.add('message1', 'leave')
             }
     }
     else if (sender === name) {
@@ -61,6 +62,7 @@ chatSocket.onmessage = function(e) {
     if (document.querySelector('#emptyText')) {
         document.querySelector('#emptyText').remove()
     }
+    $("div#chat-log").scrollTop($("div#chat-log")[0].scrollHeight);
 };
 
     document.querySelector('#chat-message-input').focus();
