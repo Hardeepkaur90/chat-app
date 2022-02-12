@@ -1,3 +1,23 @@
+
+let base64String = "";
+  
+function imageUploaded() {
+    var file = document.querySelector(
+        'input[type=file]')['files'][0];
+  
+    var reader = new FileReader();
+    console.log("next");
+      
+    reader.onload = function () {
+        base64String = reader.result.replace("data:", "")
+            .replace(/^.+,/, "");
+  
+        imageBase64Stringsep = base64String;
+        // console.log(base64String);
+    }
+    reader.readAsDataURL(file);
+}
+  
 const name = prompt('Enter Your Name')
 
 if (name === '') {
@@ -17,7 +37,7 @@ if (!chatLog.hasChildNodes()) {
 }
 
 const chatSocket = new WebSocket(
-    'wss://'
+    'ws://'
     + window.location.host
     + '/ws/chat/'
     + roomName
@@ -33,7 +53,7 @@ chatSocket.addEventListener('open',()=>{
 
 chatSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
-    console.log(data);
+    console.log(data,"================");
     const messageElement = document.createElement('div')
     const sender = data['sender']
     messageElement.innerHTML = '<b>' + data.sender + '</b><br/>'  + data.message
@@ -68,22 +88,24 @@ chatSocket.onmessage = function(e) {
     document.querySelector('#chat-message-input').focus();
     
     document.querySelector('#chat-message-input').onkeyup = function(e) {
-        if (e.keyCode === 13) {  // enter, return
+        if (e.keyCode === 13) {  
             document.querySelector('#chat-message-submit').click();
         }
     };
     
 document.querySelector('#chat-message-submit').onclick = function(e) {
     const messageInputDom = document.querySelector('#chat-message-input');
+    console.log(base64String);
     const message = messageInputDom.value;
     
-    if (message === '') {
-        alert("Please Enter Data");
-        return 0;
-    }
+    // if (message === '') {
+    //     alert("Please Enter Data");
+    //     return 0;
+    // }
     chatSocket.send(JSON.stringify({
         'message': message,
-        "username":name
+        "username":name,
+        "image":base64String
     }));
     messageInputDom.value = '';
 };
