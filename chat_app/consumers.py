@@ -19,29 +19,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         self.messages.append({"msg": f"{ f } Join Group", "id": f.id, "username": f.username})
    
 
-    # async def disconnect(self, close_code):
-    #     # text_data_json = json.loads(text_data)
-    #     # msgtype = text_data_json.get('type')
-    #     # username = text_data_json.get("username")
-    #     # Leave room group
-    #     f=self.scope['user']
-    #     await self.channel_layer.group_discard(
-    #         self.room_group_name,
-    #         self.channel_name
-    #     )
-    #     print(self.room_group_name)
-    #     self.messages.append({"msg": f"{ f } Leave Group", "username": f.username})
-    #     # if msgtype == "user_leave":
-    #     await self.channel_layer.group_send(
-    #         self.room_group_name,
-    #         {
-    #             'type': 'chat_message',
-    #             'message': f"{ username } Leave Group",
-    #             'sender': f.username
-    #             }
-    #             )
-    #         # return
-
     # Receive message from WebSocket
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)

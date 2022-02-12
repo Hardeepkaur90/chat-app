@@ -34,10 +34,23 @@ chatSocket.addEventListener('open',()=>{
 
 chatSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
+    console.log(data);
     const messageElement = document.createElement('div')
     const sender = data['sender']
     messageElement.innerHTML = '<b>' + data.sender + '</b><br/>'  + data.message
-    if (sender === name) {
+    if (data.message === 'Join Group'){
+        if (sender === name) {
+            messageElement.classList.add('message', 'join')
+            } else {
+            messageElement.classList.add('message', 'recever-join')
+        }
+    }
+    else if(data.message === 'leaved the chat'){
+        if (sender !== name) {
+            messageElement.classList.add('message', 'leave')
+            }
+    }
+    else if (sender === name) {
         messageElement.classList.add('message', 'sender')
     } else {
         messageElement.classList.add('message', 'receiver')
@@ -50,16 +63,6 @@ chatSocket.onmessage = function(e) {
     }
 };
 
-// chatSocket.addEventListener('onclose',()=>{
-//     chatSocket.send(JSON.stringify({
-//         'type': "user_leave",
-//         "username":name
-//     }));
-// })
-// chatSocket.onclose = function(e) {
-    //     console.error('Chat socket closed unexpectedly');
-    // };
-    
     document.querySelector('#chat-message-input').focus();
     
     document.querySelector('#chat-message-input').onkeyup = function(e) {
@@ -68,22 +71,26 @@ chatSocket.onmessage = function(e) {
         }
     };
     
-    document.querySelector('#chat-message-submit').onclick = function(e) {
-        const messageInputDom = document.querySelector('#chat-message-input');
-        const message = messageInputDom.value;
-        
-        chatSocket.send(JSON.stringify({
-            'message': message,
-            "username":name
-        }));
-        messageInputDom.value = '';
+document.querySelector('#chat-message-submit').onclick = function(e) {
+    const messageInputDom = document.querySelector('#chat-message-input');
+    const message = messageInputDom.value;
+    
+    if (message === '') {
+        alert("Please Enter Data");
+        return 0;
+    }
+    chatSocket.send(JSON.stringify({
+        'message': message,
+        "username":name
+    }));
+    messageInputDom.value = '';
 };
 
 
 document.getElementById('leave_chat').addEventListener("click",()=>{
     chatSocket.send(JSON.stringify({
-        'message': "<b>" + name + "</b>"+ " leaved the chat",
-        "username":''
+        'message': "leaved the chat",
+        "username":name
     }))
     chatSocket.close()
     window.location = window.location.origin + '/chat/';
