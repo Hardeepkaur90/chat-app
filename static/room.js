@@ -13,7 +13,6 @@ function imageUploaded() {
             .replace(/^.+,/, "");
   
         imageBase64Stringsep = base64String;
-        // console.log(base64String);
     }
     reader.readAsDataURL(file);
 }
@@ -52,28 +51,47 @@ chatSocket.addEventListener('open',()=>{
 })
 
 chatSocket.onmessage = function(e) {
+
     const data = JSON.parse(e.data);
-    console.log(data,"================");
+    let baseStr64=data.image;
+    // console.log(typeof(baseStr64))
+    var image = new Image();
+    image.src ="data:image/jpg;base64," + baseStr64;
+    image.width = 160;
+    image.height = 160;
     const messageElement = document.createElement('div')
+    messageElement.id = 'someId';
     const sender = data['sender']
-    messageElement.innerHTML = '<b>' + data.sender + '</b><br/>'  + data.message
+    // console.log(data.image,"==============")
+    // if (baseStr64!==null && baseStr64!==''){
+    //     var ImageElement = document.getElementById('someId').appendChild(image)
+    //     messageElement.innerHTML = '<b>' + data.sender + '</b><br/>'  + data.message + ImageElement ;
+    // }
+    messageElement.innerHTML = '<b>' + data.sender + '</b><br/>'  + data.message;
+
     if (data.message === 'Join Group'){
-        messageElement.innerHTML = '<b>' + data.sender + '  '  + data.message
+        messageElement.innerHTML = '<b>' + data.sender + '  '  + data.message;
         if (sender === name) {
             messageElement.classList.add('message1', 'join')
             } else {
             messageElement.classList.add('message1', 'recever-join')
         }
     }
+
     else if(data.message === 'leaved the chat'){
-        messageElement.innerHTML = '<b>' + data.sender + '  '  + data.message
+        messageElement.innerHTML = '<b>' + data.sender + '   '  + data.message
         if (sender !== name) {
             messageElement.classList.add('message1', 'leave')
             }
     }
+
     else if (sender === name) {
         messageElement.classList.add('message', 'sender')
-    } else {
+        messageElement.innerHTML = '<b>' + data.sender + '</b><br/>'  + data.message + document.getElementById('someId').appendChild(image);
+        // messageElement.classList.add('image', 'sender')
+    } 
+
+    else {
         messageElement.classList.add('message', 'receiver')
     }
 
@@ -82,6 +100,7 @@ chatSocket.onmessage = function(e) {
     if (document.querySelector('#emptyText')) {
         document.querySelector('#emptyText').remove()
     }
+
     $("div#chat-log").scrollTop($("div#chat-log")[0].scrollHeight);
 };
 
@@ -95,13 +114,12 @@ chatSocket.onmessage = function(e) {
     
 document.querySelector('#chat-message-submit').onclick = function(e) {
     const messageInputDom = document.querySelector('#chat-message-input');
-    console.log(base64String);
     const message = messageInputDom.value;
     
-    // if (message === '') {
-    //     alert("Please Enter Data");
-    //     return 0;
-    // }
+    if (message === '' && base64String==='') {
+        alert("Please Enter Data");
+        return 0;
+    }
     chatSocket.send(JSON.stringify({
         'message': message,
         "username":name,

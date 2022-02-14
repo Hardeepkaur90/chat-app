@@ -24,7 +24,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         text_data_json = json.loads(text_data)
         msgtype = text_data_json.get('type')
         username = text_data_json.get("username")
-        image = text_data_json.get('image')
         if msgtype == "user_joined":
             await self.channel_layer.group_send(
             self.room_group_name,
@@ -35,11 +34,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 }
                 )
             return
+        image = text_data_json.get('image')
         message = text_data_json['message']
+        print(message)
         self.user_id = self.scope['user'].id
 
         # Send message to room group
-        self.messages.append({"msg": message, "id": self.user_id, "username": self.scope['user'].username})
+        self.messages.append({"msg": message, "id": self.user_id, "username": self.scope['user'].username,"image":image})
         await self.channel_layer.group_send(
             self.room_group_name,
             {
@@ -52,11 +53,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     # Receive message from room group
     async def chat_message(self, event):
+        image = event.get('image')
         message = event['message']
         sender = event.get("sender")
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
             'message': message,
+            'image': image,
             'sender': sender
         }))
