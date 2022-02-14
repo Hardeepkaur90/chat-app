@@ -55,12 +55,11 @@ chatSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
     let baseStr64=data.image;
     // console.log(typeof(baseStr64))
-    var image = new Image();
+    var image = document.createElement('img')
     image.src ="data:image/jpg;base64," + baseStr64;
     image.width = 160;
     image.height = 160;
     const messageElement = document.createElement('div')
-    messageElement.id = 'someId';
     const sender = data['sender']
     // console.log(data.image,"==============")
     // if (baseStr64!==null && baseStr64!==''){
@@ -86,8 +85,11 @@ chatSocket.onmessage = function(e) {
     }
 
     else if (sender === name) {
+        // s= messageElement.innerHTML = image;
+        // console.log(s);
         messageElement.classList.add('message', 'sender')
-        messageElement.innerHTML = '<b>' + data.sender + '</b><br/>'  + data.message + document.getElementById('someId').appendChild(image);
+        messageElement.innerHTML = '<b>' + data.sender + '</b><br/>'  + data.message + '<br/>'  ;
+        messageElement.appendChild(image)
         // messageElement.classList.add('image', 'sender')
     } 
 
@@ -120,6 +122,7 @@ document.querySelector('#chat-message-submit').onclick = function(e) {
         alert("Please Enter Data");
         return 0;
     }
+
     chatSocket.send(JSON.stringify({
         'message': message,
         "username":name,
