@@ -36,7 +36,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
             return
         image = text_data_json.get('image')
         message = text_data_json['message']
-        print(message)
         self.user_id = self.scope['user'].id
 
         # Send message to room group

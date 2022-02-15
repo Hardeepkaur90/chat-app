@@ -17,7 +17,7 @@
     <div class="container-fluid p-5">
       <a class="leaveButton" id="leave_chat">Leave Room</a>
       <div class="container">
-        <div id="chat-log" style="overflow-y: scroll; max-height: 50vh"></div>
+        <div id="chat-log" style="overflow-y: scroll; display: flex !important; flex-direction: column !important; max-height: 50vh"></div>
       </div>
 
       <div class="container">
@@ -29,10 +29,9 @@
           required
         /><br /><input
         class="textInput"
-        id="chat-message-input"
+        id="chat-message-input-file"
         type="file"
         onchange="imageUploaded()"
-        required
       /><br />
         <input
           class="button"

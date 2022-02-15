@@ -109,6 +109,7 @@ body {
 
 .receiver {
 	background-color: #62bd56;
+	margin-right: auto;
 }
 .join {
 	color: #25b808af;
@@ -135,9 +136,11 @@ body {
     float: right;
 }
 .chat-log {
-	display: flex !important;
-	flex-direction: column !important;
+	/* display: flex !important;
+	flex-direction: column !important; */
     height: 150px;
     overflow-y: hidden;
     border: 1px solid black;
+	overflow-y: scroll; 
+	max-height: 50vh;
 }
