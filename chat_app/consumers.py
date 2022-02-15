@@ -4,11 +4,13 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 class ChatConsumer(AsyncWebsocketConsumer):
 
     messages = []
+    room = {}
 
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = 'chat_%s' % self.room_name
         f=self.scope['user']
+        print(f)
         
         # Join room group
         await self.channel_layer.group_add(
@@ -33,6 +35,21 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 'sender': username
                 }
                 )
+                
+            key = self.room_name
+            print(self.room[key],"=============")
+            values = []
+            if key in self.room.keys():
+                
+                self.room[key]=values.append[username]
+                # print(q,"bjhgfjdkghghghghghghghghghghghghghghghghghghghghghgh")
+                # self.room[values] = list(values)
+                # self.room[key]=values.append(values)
+            else:
+                self.room[key]=values.append[username]
+            print(self.room_name)
+            print(self.room)
+            print(values)
             return
         image = text_data_json.get('image')
         message = text_data_json['message']
