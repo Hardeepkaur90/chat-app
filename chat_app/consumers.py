@@ -20,16 +20,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     def leave_chat(self, username):
         key = self.room_name
-        print(key)
-        print(self.room)
+        
         self.room[key].remove(username)
-        print(self.room)
+        re = self.room
+        return re
 
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = 'chat_%s' % self.room_name
         f=self.scope['user']
-        print(f)
         
         # Join room group
         await self.channel_layer.group_add(
@@ -52,19 +51,25 @@ class ChatConsumer(AsyncWebsocketConsumer):
             {
                 'type': 'chat_message',
                 'message': "Join Group",
+                'total':self.join_chat(username),
                 'sender': username
                 }
                 )
-            # self.join_chat(username)
-            print(self.join_chat(username),"===========================")
             return
-        
-        image = text_data_json.get('image')
         message = text_data_json['message']
-        self.user_id = self.scope['user'].id
 
         if message == "leaved the chat":
-            self.leave_chat(username)
+            await self.channel_layer.group_send(
+            self.room_group_name,
+            {
+                'message': message,
+                'total':self.leave_chat(username),
+                'sender': username
+                }
+                )
+            return
+        image = text_data_json.get('image')
+        self.user_id = self.scope['user'].id
 
         # Send message to room group
         self.messages.append({"msg": message, "id": self.user_id, "username": self.scope['user'].username,"image":image})
@@ -83,10 +88,20 @@ class ChatConsumer(AsyncWebsocketConsumer):
         image = event.get('image')
         message = event['message']
         sender = event.get("sender")
+        total = event['total']
+        print(message,"===============")
 
+        if message == "Join Group":
         # Send message to WebSocket
-        await self.send(text_data=json.dumps({
-            'message': message,
-            'image': image,
-            'sender': sender
-        }))
+            await self.send(text_data=json.dumps({
+                'message': message,
+                'image': image,
+                'sender': sender,
+                'total':total
+            }))
+        else:
+            await self.send(text_data=json.dumps({
+                'message': message,
+                'image': image,
+                'sender': sender
+            }))

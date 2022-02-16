@@ -6,7 +6,6 @@ function imageUploaded() {
         'input[type=file]')['files'][0];
   
     var reader = new FileReader();
-    // console.log("next");
     
     reader.onload = function () {
         base64String = reader.result.replace("data:", "")
@@ -16,6 +15,10 @@ function imageUploaded() {
     }
     reader.readAsDataURL(file);    
 }
+// function re(){
+//     document.location.reload();
+//     document.getElementById("leave_chat").click();
+//   };
 
 const name = prompt('Enter Your Name')
 
@@ -54,6 +57,8 @@ chatSocket.onmessage = function(e) {
 
     const data = JSON.parse(e.data);
     let baseStr64=data.image;
+    let data12 = data.total;
+    let list = document.getElementById("myList");
     var image = document.createElement('img')
     image.src ="data:image/jpg;base64," + baseStr64;
     image.width = 160;
@@ -61,7 +66,13 @@ chatSocket.onmessage = function(e) {
     const messageElement = document.createElement('div')
     const sender = data['sender']
     messageElement.innerHTML = '<b>' + data.sender + '</b><br/>'  + data.message;
-
+    parent = list.parentNode;
+    list.innerHTML = '';
+    for(var i = 0; i < data12[roomName].length ; i++){
+        let li = document.createElement("li");
+        li.innerText = data12[roomName][i];
+        list.innerHTML += li.textContent + '<br/>';
+        }
     if (data.message === 'Join Group'){
         messageElement.innerHTML = '<b>' + data.sender + '  '  + data.message;
         if (sender === name) {
@@ -97,8 +108,10 @@ chatSocket.onmessage = function(e) {
     if (document.querySelector('#emptyText')) {
         document.querySelector('#emptyText').remove()
     }
-
+    
     $("div#chat-log").scrollTop($("div#chat-log")[0].scrollHeight);
+     
+      
 };
 
     document.querySelector('#chat-message-input').focus();
@@ -108,6 +121,7 @@ chatSocket.onmessage = function(e) {
             document.querySelector('#chat-message-submit').click();
         }
     };
+
     
 document.querySelector('#chat-message-submit').onclick = function(e) {
     const messageInputDom = document.querySelector('#chat-message-input');
